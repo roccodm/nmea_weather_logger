@@ -14,8 +14,8 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 #-----------------------------------------
 
 running=True
-tcport=5555
-device="/dev/pts/7"
+tcpport=5555
+device="/dev/pts/10"
 dataset={}
 server = ""
 
@@ -132,7 +132,7 @@ class myHandler(BaseHTTPRequestHandler):
       if len(dataset)>0:
          response=""
          for element in dataset:
-            response+="%s:%s\n" % (element,dataset[element])
+            response+="%s|%s\n" % (element,dataset[element])
          self.wfile.write(response)
       else:
          self.wfile.write("response:no data")
@@ -148,7 +148,8 @@ class webs(threading.Thread):
 
    def run(self):
       global server
-      server = HTTPServer(('', 4775), myHandler)
+      global tcpport
+      server = HTTPServer(('', tcpport), myHandler)
       server.serve_forever()
 
 
